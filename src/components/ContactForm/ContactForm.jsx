@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+
 import { addContactAction } from 'redux/contacts.slice';
-import css from './ContactForm.module.css';
+import { Button, Form, Input, Label } from './ContactForm.styled';
 
 export const ContactForm = () => {
   const [name, setName] = useState('');
@@ -33,11 +34,10 @@ export const ContactForm = () => {
   };
 
   return (
-    <form className={css.form} onSubmit={handleSubmit}>
-      <label className={css.label}>
+    <Form onSubmit={handleSubmit}>
+      <Label>
         <span>Name</span>
-        <input
-          className={css.input}
+        <Input
           type="text"
           name="name"
           value={name}
@@ -47,12 +47,11 @@ export const ContactForm = () => {
           onChange={handleChange}
           required
         />
-      </label>
+      </Label>
 
-      <label className={css.label}>
+      <Label>
         <span>Number</span>
-        <input
-          className={css.input}
+        <Input
           type="tel"
           name="number"
           value={number}
@@ -62,9 +61,9 @@ export const ContactForm = () => {
           onChange={handleChange}
           required
         />
-      </label>
+      </Label>
 
-      <button className={css.button}>Add contact</button>
-    </form>
+      <Button>Add contact</Button>
+    </Form>
   );
 };
