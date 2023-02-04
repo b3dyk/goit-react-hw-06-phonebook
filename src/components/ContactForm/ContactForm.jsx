@@ -1,21 +1,30 @@
+import { nanoid } from '@reduxjs/toolkit';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getContacts } from 'redux/contacts.selector';
 
 import { addContactAction } from 'redux/contacts.slice';
 import { Button, Form, Input, Label } from './ContactForm.styled';
 
 export const ContactForm = () => {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const contacts = useSelector(getContacts);
+
+  const [name, setName] = useState(() => localStorage.getItem('name') ?? '');
+  const [number, setNumber] = useState(
+    () => localStorage.getItem('number') ?? ''
+  );
+
   const dispatch = useDispatch();
 
   const handleChange = ({ target: { name, value } }) => {
     switch (name) {
       case 'name':
+        localStorage.setItem('name', value);
         setName(value);
         break;
 
       case 'number':
+        localStorage.setItem('number', value);
         setNumber(value);
         break;
 
@@ -27,8 +36,22 @@ export const ContactForm = () => {
   const handleSubmit = evt => {
     evt.preventDefault();
 
-    dispatch(addContactAction({ name, number }));
+    const isNameExist = Boolean(
+      contacts.find(contact => contact.name === name)
+    );
 
+    if (isNameExist) {
+      alert(`${name} already in contacts. Enter new name`);
+      setName('');
+      return;
+    }
+
+    const contact = { id: nanoid(), name, number };
+
+    dispatch(addContactAction(contact));
+
+    localStorage.removeItem('name');
+    localStorage.removeItem('number');
     setName('');
     setNumber('');
   };

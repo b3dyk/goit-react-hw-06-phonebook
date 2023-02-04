@@ -3,10 +3,11 @@ import { useSelector } from 'react-redux';
 
 import { ContactItem } from 'components/ContactItem/ContactItem';
 import { List } from './ContactList.styled';
+import { getContacts, getFilter } from 'redux/contacts.selector';
 
 export const ContactList = () => {
-  const contacts = useSelector(state => state.contacts);
-  const filter = useSelector(state => state.filter);
+  const contacts = useSelector(getContacts);
+  const filter = useSelector(getFilter);
 
   const visibleContacts = useMemo(
     () =>
