@@ -42,6 +42,7 @@ export const ContactForm = () => {
 
     if (isNameExist) {
       alert(`${name} already in contacts. Enter new name`);
+      localStorage.removeItem('name');
       setName('');
       return;
     }
